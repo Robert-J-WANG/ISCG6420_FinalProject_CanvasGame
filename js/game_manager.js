@@ -177,8 +177,8 @@ class interfaceScreen {
         this.width = width;
         this.height = height;
     }
-    Draw() {}
-    Update() {}
+    Draw() { }
+    Update() { }
 }
 
 // the start screen
@@ -240,7 +240,7 @@ class GameScreen extends interfaceScreen {
         this.playerObject.xBound = this.width - this.playerObject.width;
         this.playerObject.yBound = this.height - this.playerObject.height - 75;
 
-        this.playerObject.UpdatePosition = function() {
+        this.playerObject.UpdatePosition = function () {
             if (leftKeyPressed) {
                 this.x -= this.xSpeed;
                 this.isFlipped = false;

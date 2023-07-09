@@ -83,7 +83,7 @@ class Player extends CanvasImage {
 
 
         // handle collisions
-        this.catchNet = new Rectangle(this.x, this.y, this.net.width - this.width / 2, this.net.height * 2, "white", "white", 0);
+        this.catchNet = new Rectangle(this.x, this.y, this.net.width - this.width / 2, this.net.height * 1.2, "white", "white", 0);
         this.catchNet.rightOffset = this.catchNet.width + this.xSpeed / 2;
         this.catchNet.leftOffset = -(this.catchNet.width + this.xSpeed / 2);
         this.catchNet.yOffset = this.height / 2 - this.catchNet.height / 2;
@@ -106,8 +106,8 @@ class Player extends CanvasImage {
     }
 
     Draw(context) {
-        var contextXOffset = this.x + this.width / 2;
-        var contextYOffset = this.y + this.height / 1.4;
+        var contextXOffset = this.x + this.width / 2.2;
+        var contextYOffset = this.y + this.height / 1.7;
         context.translate(contextXOffset, contextYOffset);
         context.rotate(this.netRotation);
 
@@ -282,7 +282,7 @@ class Arc extends Shape {
 // creates a bug 
 class Bug extends Arc {
     constructor(x, y, deltaTime) {
-        super(x, y, 0, 0, 0, Math.PI * 2, false, "yellow", "#00000000", 3);
+        super(x, y, 0, 0, 0, Math.PI * 2, false, "white", "#00000000", 3);
         this.ghost_x = x;
         this.ghost_y = y;
 
@@ -294,9 +294,14 @@ class Bug extends Arc {
         this.deltaTime = deltaTime;
         this.timeAlive = 0;
 
+
         // current rgb values for the bug
-        this.targetColor = new Color(255, 0, 0);
-        this.currentColor = new Color(255, 255, 0);
+        // Generate random RGB values for the bug's target color
+        const randomR = RandomNumber(0, 255);
+        const randomG = RandomNumber(0, 255);
+        const randomB = RandomNumber(0, 255);
+        this.targetColor = new Color(randomR, randomG, randomB);
+        this.currentColor = new Color(255, 255, 255);
         this.colorStep = new Color((this.targetColor.r - this.currentColor.r) / (deltaTime * 6000),
             (this.targetColor.g - this.currentColor.g) / (deltaTime * 6000),
             (this.targetColor.b - this.currentColor.b) / (deltaTime * 6000));
@@ -307,7 +312,7 @@ class Bug extends Arc {
         this.timeAlive += this.deltaTime;
 
         if (this.timeAlive <= 1) this.radius += 4 * this.deltaTime;
-        else if (this.timeAlive <= 2) {} else if (this.timeAlive <= 5) {
+        else if (this.timeAlive <= 2) { } else if (this.timeAlive <= 5) {
             // changing color and growing
             this.currentColor.add(this.colorStep);
             this.radius += this.sizeStep;
@@ -340,7 +345,7 @@ class Bug extends Arc {
     }
 }
 
-// other functions
+// other functions     
 function TestPlayerBugCollision(playerX, playerY, playerWidth, playerHeight, bug) {
     var horizontal_edge = !(playerX + playerWidth < bug.x - bug.radius || playerX > bug.x + bug.radius);
     var vertical_edge = !(playerY + playerHeight < bug.y - bug.radius || playerY > bug.y + bug.radius);
