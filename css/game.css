@@ -1,14 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: #000;
+    background: #1c1e26;
+}
+
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 canvas {
-    display: block;
-    margin: 20px auto;
-    border: 5px solid white;
-    background-image: url("../images/game_background_image.jpg");
+    /* width: 65vw;
+    height: 80vh; */
+    background: url("../images/game_background_image.jpg") center center/cover no-repeat ;
+    border-radius: 50px;
 }
 
 #canvas_images {
     display: none;
 }
+

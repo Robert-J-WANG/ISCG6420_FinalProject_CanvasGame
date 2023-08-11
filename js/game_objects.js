@@ -1,3 +1,6 @@
+/* The Shape class is a JavaScript class that represents a shape with properties such as position, fill
+color, stroke color, and border width, and provides methods to set these properties and display the
+shape on a canvas context. */
 class Shape {
     constructor(x, y, fillColor, strokeColor, borderWidth) {
         this.x = x;
@@ -22,6 +25,8 @@ class Shape {
     }
 }
 
+/* The CanvasText class is a subclass of Shape that represents a text element on a canvas with
+properties such as font, text alignment, and fill/stroke colors. */
 // create CanvasText
 class CanvasText extends Shape {
     constructor(x, y, text, font, textAlign, fillColor, strokeColor, borderWidth) {
