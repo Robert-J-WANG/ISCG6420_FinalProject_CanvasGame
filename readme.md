@@ -239,7 +239,7 @@
         ```
 
     方法：
-      ```javascript
+        ```javascript
         
         beginPath()：开始新的路径
         moveTo(x, y)：将绘图游标移动到指定坐标
