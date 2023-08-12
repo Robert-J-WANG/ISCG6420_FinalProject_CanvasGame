@@ -64,6 +64,7 @@
 
     1. 画一条粗线为10px, 长度为100px, 红色的直线：
 
+
     ```javascript
             // 设置一条直线直线的样式
         ctx.strokeStyle = "red"; // 画笔颜色
@@ -79,9 +80,11 @@
         ctx.stroke();
         ctx.closePath(); // 可以不用申明
     ```
+    
 
 
     2. 画一绿色矩形：
+
 
     ```javascript
         // 设置矩形的位置和尺寸
@@ -104,7 +107,9 @@
     ```
 
 
+
     3. 画一个圆形
+
 
     ```javascript
             // 设置圆的样式
@@ -122,7 +127,9 @@
     
     ```
 
+
     4. 画一段圆弧
+
 
     ```javascript
     // 可用beginPath() 和 closePath() 包裹，来隔绝和中断与其他图形的关联
@@ -134,6 +141,7 @@
     ctx.closePath();
     
     ```
+
 
 
 
