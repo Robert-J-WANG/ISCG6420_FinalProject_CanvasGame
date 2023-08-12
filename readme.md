@@ -209,7 +209,7 @@
         
         ```
 ​		
- 8. 绘制一个图像：需要创建一个Image对象，并使用image.onload方法，是个异步操作
+    8. 绘制一个图像：需要创建一个Image对象，并使用image.onload方法，是个异步操作
 
         ```javascript
         // 创建一个Image对象
@@ -225,24 +225,32 @@
         ```
 ​				
 
-9. 总结：经常使用到的Canvas上下文属性和方法有：
+7. 总结：经常使用到的Canvas上下文属性和方法有：
 
     属性：
-        fillStyle：设置填充颜色。
-        strokeStyle：设置描边（画笔）的颜色、渐变或图案。
-        lineWidth：设置线条宽度。
-        font：设置文字的字体样式。
-        globalAlpha：设置绘制的全局透明度。
+        ```javascript
+
+        fillStyle：设置填充颜色
+        strokeStyle：设置描边（画笔）的颜色、渐变或图案
+        lineWidth：设置线条宽度
+        font：设置文字的字体样式
+        globalAlpha：设置绘制的全局透明度
+
+        ```
 
     方法：
-        beginPath()：开始新的路径。
-        moveTo(x, y)：将绘图游标移动到指定坐标。
-        lineTo(x, y)：从当前点绘制一条直线到指定坐标。
-        arc(x, y, radius, startAngle, endAngle, anticlockwise)：绘制弧线。
-        arcTo(x1, y1, x2, y2, radius)：绘制弧线，连接两个点并使用半径定义曲线。
-        quadraticCurveTo(cpX, cpY, x, y)：绘制二次贝塞尔曲线。
-        drawImage(image, x, y, width, height)：绘制图像。
-        fill()：填充当前路径。
-        stroke()：绘制当前路径的描边。
-        closePath()：闭合路径。
-        fillRect(x, y, width, height)：绘制填充矩形。
+      ```javascript
+        
+        beginPath()：开始新的路径
+        moveTo(x, y)：将绘图游标移动到指定坐标
+        lineTo(x, y)：从当前点绘制一条直线到指定坐标
+        arc(x, y, radius, startAngle, endAngle, anticlockwise)：绘制弧线
+        arcTo(x1, y1, x2, y2, radius)：绘制弧线，连接两个点并使用半径定义曲线
+        quadraticCurveTo(cpX, cpY, x, y)：绘制二次贝塞尔曲线
+        drawImage(image, x, y, width, height)：绘制图
+        fill()：填充当前路径
+        stroke()：绘制当前路径的描边
+        closePath()：闭合路径
+        fillRect(x, y, width, height)：绘制填充矩形
+
+        ```
