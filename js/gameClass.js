@@ -1,26 +1,27 @@
-/* The Shape class is a JavaScript class that represents a shape with properties such as position, fill
-color, stroke color, and border width, and provides methods to set these properties and display the
-shape on a canvas context. */
+// 创建一个基类
 class Shape {
+    // 定义基类的属性
     constructor(x, y, fillColor, strokeColor, borderWidth) {
-        this.x = x;
-        this.y = y;
-        this.fillColor = fillColor;
-        this.strokeColor = strokeColor;
-        this.borderWidth = borderWidth;
+        this.x = x;  //起始点x
+        this.y = y; //起始点y
+        this.fillColor = fillColor;  // 填充的颜色
+        this.strokeColor = strokeColor;  // 画笔（边框）的颜色
+        this.borderWidth = borderWidth;  // 画笔（边框）的宽度
     }
 
-    setProperty(context) {
-        context.fillStyle = this.fillColor;
-        context.strokeStyle = this.strokeColor;
-        context.lineWidth = this.borderWidth;
-        context.beginPath();
+    // 设置ctx对象的属性
+    setProperties(ctx) {
+        const { fillColor, strokeColor, borderWidth } = this
+        ctx.fillStyle = fillColor;
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = borderWidth;
+        ctx.beginPath();
     }
-
-    Display(context) {
-        context.fill();
-        context.stroke();
-        context.closePath();
+    // 定义ctx对象的draw方法
+    display(ctx) {
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
     }
 }
 
@@ -35,20 +36,20 @@ class CanvasText extends Shape {
         this.textAlign = textAlign;
     }
 
-    SetText(newText) {
+    setText(newText) {
         this.text = newText;
     }
 
-    setProperty(context) {
-        super.setProperty(context);
-        context.font = this.font;
-        context.textAlign = this.textAlign;
+    setProperties(ctx) {
+        super.setProperties(ctx);
+        ctx.font = this.font;
+        ctx.textAlign = this.textAlign;
     }
 
-    Draw(context) {
-        this.setProperty(context);
-        context.fillText(this.text, this.x, this.y);
-        this.Display(context);
+    draw(ctx) {
+        this.setProperties(ctx);
+        ctx.fillText(this.text, this.x, this.y);
+        this.display(ctx);
     }
 }
 
@@ -62,8 +63,8 @@ class CanvasImage extends Shape {
         this.height = this.imageElement.height;
     }
 
-    Draw(context) {
-        context.drawImage(this.imageElement, this.x, this.y, this.width, this.height);
+    draw(ctx) {
+        ctx.drawImage(this.imageElement, this.x, this.y, this.width, this.height);
     }
 }
 
@@ -76,10 +77,10 @@ class Rectangle extends Shape {
         this.height = height;
     }
 
-    Draw(context) {
-        this.setProperty(context);
-        context.rect(this.x, this.y, this.width, this.height);
-        this.Display(context)
+    draw(ctx) {
+        this.setProperties(ctx);
+        ctx.rect(this.x, this.y, this.width, this.height);
+        this.display(ctx)
     }
 }
 
@@ -96,10 +97,10 @@ class Arc extends Shape {
         this.isCounterClockwise = isCounterClockwise;
     }
 
-    Draw(context) {
-        this.setProperty(context);
-        context.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle, this.isCounterClockwise);
-        this.Display(context);
+    draw(ctx) {
+        this.setProperties(ctx);
+        ctx.arc(this.x, this.y, this.radius, this.startAngle, this.endAngle, this.isCounterClockwise);
+        this.display(ctx);
     }
 }
 

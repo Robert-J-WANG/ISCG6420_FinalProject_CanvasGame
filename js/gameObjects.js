@@ -41,34 +41,34 @@ class Player extends CanvasImage {
         this.CanCatchBugs = false;
     }
 
-    Draw(context) {
-        var contextXOffset = this.x + this.width / 2.2;
-        var contextYOffset = this.y + this.height / 1.7;
-        context.translate(contextXOffset, contextYOffset);
-        context.rotate(this.netRotation);
+    draw(ctx) {
+        var ctxXOffset = this.x + this.width / 2.2;
+        var ctxYOffset = this.y + this.height / 1.7;
+        ctx.translate(ctxXOffset, ctxYOffset);
+        ctx.rotate(this.netRotation);
 
         if (!this.isFlipped) {
-            context.scale(-1, 1);
-            this.net.Draw(context);
-            context.scale(-1, 1);
+            ctx.scale(-1, 1);
+            this.net.draw(ctx);
+            ctx.scale(-1, 1);
         } else {
-            this.net.Draw(context);
+            this.net.draw(ctx);
         }
-        context.rotate(-this.netRotation);
-        context.translate(-contextXOffset, -contextYOffset);
+        ctx.rotate(-this.netRotation);
+        ctx.translate(-ctxXOffset, -ctxYOffset);
 
         if (!this.isFlipped) {
             this.imageElement = this.flipped;
 
-            super.Draw(context);
+            super.draw(ctx);
         } else {
             this.imageElement = this.normal;
 
-            super.Draw(context);
+            super.draw(ctx);
         }
 
-        this.leftEye.Draw(context);
-        this.rightEye.Draw(context);
+        this.leftEye.draw(ctx);
+        this.rightEye.draw(ctx);
     }
 
     UpdateOtherFeatures() {
@@ -194,9 +194,9 @@ class Button extends Rectangle {
 
     }
 
-    Draw(context) {
-        super.Draw(context);
-        this.text.Draw(context);
+    draw(ctx) {
+        super.draw(ctx);
+        this.text.draw(ctx);
     }
 }
 
@@ -205,8 +205,8 @@ class Slider extends Rectangle {
     constructor(x, y, width, height, fillColor, strokeColor, borderWidth, sliderDescription, defaultValue, minValue, maxValue) {
         super(x, y, width, height, fillColor, strokeColor, borderWidth);
         this.box = new Rectangle(x, y, 10, height, "black", "black", 0);
-        this.description = new CanvasText(x - sliderDescription.length, y + height, sliderDescription, "30px Georgia", "right", "white", "#00000000", 0);
-        this.text = new CanvasText(x + width + 20, y + height, defaultValue, "30px Georgia", "left", "white", "#00000000", 0);
+        this.description = new CanvasText(x - sliderDescription.length, y + height, sliderDescription, "30px Borel", "right", "white", "#00000000", 0);
+        this.text = new CanvasText(x + width + 20, y + height, defaultValue, "30px Borel", "left", "white", "#00000000", 0);
 
         this.minValue = minValue;
         this.maxValue = maxValue - 1;
@@ -215,11 +215,11 @@ class Slider extends Rectangle {
         this.updatePosition();
     }
 
-    Draw(context) {
-        super.Draw(context);
-        this.box.Draw(context);
-        this.text.Draw(context);
-        this.description.Draw(context);
+    draw(ctx) {
+        super.draw(ctx);
+        this.box.draw(ctx);
+        this.text.draw(ctx);
+        this.description.draw(ctx);
     }
 
     UpdateValue(xCoord) {
@@ -233,14 +233,14 @@ class Slider extends Rectangle {
 
     SetValue(newValue) {
         this.value = newValue;
-        this.text.SetText(this.value);
+        this.text.setText(this.value);
         this.updatePosition();
     }
 
     updateSliderValue() {
         this.value = ((this.box.x - this.x) / (this.width - this.box.width)) * this.maxValue + this.minValue;
         this.value = parseInt(this.value);
-        this.text.SetText(this.value);
+        this.text.setText(this.value);
     }
 
     updatePosition() {
@@ -250,12 +250,12 @@ class Slider extends Rectangle {
 
 // interface class
 class interfaceScreen {
-    constructor(context, width, height) {
-        this.context = context;
+    constructor(ctx, width, height) {
+        this.ctx = ctx;
         this.width = width;
         this.height = height;
     }
-    Draw() { }
+    draw() { }
     Update() { }
 }
 
