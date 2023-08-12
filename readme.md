@@ -227,6 +227,20 @@
 
 7. 总结：经常使用到的Canvas上下文属性和方法有：
 
+        ```javascript
+        // 设置文字样式
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "blue";
+        ctx.textAlign = 'center';
+
+        // 绘制文字
+        const text = "Hello, Canvas!";
+        const x = 50;
+        const y = 100;
+        ctx.fillText(text, x, y);
+        
+        ```
+
     属性：
         ```javascript
 

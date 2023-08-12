@@ -14,9 +14,11 @@ let upKeyPressed = false;
 let downKeyPressed = false;
 let pauseKeyPressed = false;
 
-let gameObject;
+let gameObject = null;
 
-function init() {
+// html页面挂载完毕就执行
+// 加载游戏界面
+window.onload = () => {
     gameObject = new GameObject("canvas");
 }
 
@@ -145,49 +147,12 @@ class GameObject {
     }
 }
 
-class Sound {
-    constructor(fileName, canvasID) {
-        this.sound = document.createElement("audio");
-        this.sound.src = "sounds/" + fileName;
-        this.sound.setAttribute("preload", "auto");
-        this.sound.setAttribute("controls", "none");
-        this.sound.style.display = "none";
-
-        document.getElementById(canvasID).appendChild(this.sound);
-    }
-
-    Play() {
-        this.sound.currentTime = 0;
-        this.sound.play();
-    }
-
-    Pause() {
-        this.sound.pause();
-    }
-
-    SetVolume(newVolume) {
-        this.sound.volume = newVolume / 100;
-    }
-}
-
-// interface class
-class interfaceScreen {
-    constructor(context, width, height) {
-        this.context = context;
-        this.width = width;
-        this.height = height;
-    }
-    Draw() { }
-    Update() { }
-}
 
 // the start screen
 class StartScreen extends interfaceScreen {
     constructor(context, width, height) {
         super(context, width, height);
-
         this.shapes = [];
-
         this.createShapes();
     }
 
