@@ -242,6 +242,7 @@
         ```
 
     属性：
+   
         ```javascript
 
         fillStyle：设置填充颜色
@@ -253,6 +254,7 @@
         ```
 
     方法：
+   
         ```javascript
         
         beginPath()：开始新的路径
