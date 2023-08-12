@@ -56,33 +56,63 @@
            
 
 6. 绘制简单的规则的形状：使用对应的绘制的方法：
-    ctx.stroke()： 按设定的路径画；
-    ctx.strokeRect()：画矩形；
-    ctx.arc()： 画圆形；
+    ctx.stroke()： 按设定的路径画（直线，多边形）；
+    ctx.strokeRect()：画矩形（正方形）；
+    ctx.arc()： 画圆形（圆点，圆弧）；
+    ctx.quadraticCurveTo()： 画弯曲线；
+    ctx.fillText(): 绘制文字；
+    ctx.drawImage(): 绘制图像；
+
+
 
     可以使用显式的ctx.beginPath()和ctx.closePath()方法，特定的绘制方法已经隐式封装了申明开始和结束的功能; 
 
     1. 画一条粗线为10px, 长度为100px, 红色的直线：
 
-
         ```javascript
-                // 设置一条直线直线的样式
-            ctx.strokeStyle = "red"; // 画笔颜色
-            ctx.lineWidth = 10; // 粗细为10px
-            
-            // 开始画
-                ctx.beginPath(); // 可以不用申明
-            ctx.moveTo(startX, startY); //起始点位置 
-            ctx.lineTo(endX, endY); // 结束点位置
-            ctx.lineTo(endX, endY); // 可以连着画
-            ctx.lineTo(endX, endY); // 画几段折线
-            // 按当前路径画
-            ctx.stroke();
-            ctx.closePath(); // 可以不用申明
+            // 设置一条直线直线的样式
+        ctx.strokeStyle = "red"; // 画笔颜色
+        ctx.lineWidth = 10; // 粗细为10px
+        
+        // 开始画
+            ctx.beginPath(); // 可以不用申明
+        ctx.moveTo(startX, startY); //起始点位置 
+        ctx.lineTo(endX, endY); // 结束点位置
+        ctx.lineTo(endX, endY); // 可以连着画
+        ctx.lineTo(endX, endY); // 画几段折线
+        // 按当前路径画
+        ctx.stroke();
+        ctx.closePath(); // 可以不用申明
         ```
 
+    2. 画一个等边三角形：
 
-    2. 画一绿色矩形：
+        ```javascript
+            // 设置三角形的边长和高度
+        const sideLength = 100;
+        const triangleHeight = (Math.sqrt(3) / 2) * sideLength;
+
+        // 设置三角形的顶点坐标
+        const topX = canvas.width / 2;
+        const topY = (canvas.height - triangleHeight) / 2;
+        const leftX = topX - sideLength / 2;
+        const leftY = topY + triangleHeight;
+        const rightX = topX + sideLength / 2;
+        const rightY = topY + triangleHeight;
+
+        // 设置三角形的样式
+        ctx.fillStyle = "purple"; // 填充颜色
+
+        // 绘制等边三角形
+        ctx.beginPath();
+        ctx.moveTo(topX, topY);
+        ctx.lineTo(leftX, leftY);
+        ctx.lineTo(rightX, rightY);
+        ctx.closePath();
+        ctx.fill();
+        ```
+
+    3. 画一绿色矩形：
 
         ```javascript
             // 设置矩形的位置和尺寸
@@ -106,7 +136,7 @@
 
 
 
-    3. 画一个圆形
+    4. 画一个圆形
 
         ```javascript
                 // 设置圆的样式
@@ -125,59 +155,94 @@
         ```
 
 
-    4. 画一段圆弧
+    5. 画一段圆弧
 
         ```javascript
         // 可用beginPath() 和 closePath() 包裹，来隔绝和中断与其他图形的关联
         ctx.beginPath();
         // 绘制圆弧
-        context.beginPath();
-        context.arc(centerX, centerY, radius, startAngle, endAngle);
-        context.stroke();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.stroke();
         ctx.closePath();
         
         ```
 
+    
+    6. 画一条弯曲的线
+
+        ```javascript
+        // 设置控制点和终点坐标
+        const startX = 50;
+        const startY = 100;
+        const controlX = 150;
+        const controlY = 30;
+        const endX = 250;
+        const endY = 100;
+
+        // 设置线条样式
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 3;
+
+        // 绘制弯曲线
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+        ctx.stroke();
+        
+        ```
 
 
+    7. 绘制文字
 
+        ```javascript
+        // 设置文字样式
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "blue";
+        ctx.textAlign = 'center';
 
+        // 绘制文字
+        const text = "Hello, Canvas!";
+        const x = 50;
+        const y = 100;
+        ctx.fillText(text, x, y);
+        
+        ```
 ​		
+ 8. 绘制一个图像：需要创建一个Image对象，并使用image.onload方法，是个异步操作
 
+        ```javascript
+        // 创建一个Image对象
+        const image = new Image();
+        image.src = "image.jpg"; // 图片的URL
+
+        // 图像加载完成后执行绘制
+        image.onload = function() {
+            // 绘制图像
+            context.drawImage(image, 50, 50, image.width, image.height);
+        };
+        
+        ```
 ​				
 
+9. 总结：经常使用到的Canvas上下文属性和方法有：
 
+    属性：
+        fillStyle：设置填充颜色。
+        strokeStyle：设置描边（画笔）的颜色、渐变或图案。
+        lineWidth：设置线条宽度。
+        font：设置文字的字体样式。
+        globalAlpha：设置绘制的全局透明度。
 
-
-1. `fillStyle`：设置填充的颜色、渐变或图案
-
-   ```javascript
-   ctx.fillStyle = "rgba(255,165,0,1)"; // 填充颜色
-   ```
-
-  2. `strokeStyle`：设置描边（画笔）的颜色、渐变或图案
-
-     ```javascript
-     ctx.strokeStyle = "#FFA500"; //正常颜色
-     ```
-
-  3. `lineWidth`：设置线条的宽度
-
-     ```javascript
-     ctx.lineWidth = 15; //15px
-     ```
-
-  4. `font`：设置绘制文本的字体样式
-
-     ```javascript
-     ctx.font = "48px Microsoft YaHei" // 字体越大越清晰
-     ```
-
-     
-
-  5. `textAlign`：设置文本的水平对齐方式
-
-     ```javascript
-     ctx.textAlign = 'center'	重要的属性有：
-     ```
-
+    方法：
+        beginPath()：开始新的路径。
+        moveTo(x, y)：将绘图游标移动到指定坐标。
+        lineTo(x, y)：从当前点绘制一条直线到指定坐标。
+        arc(x, y, radius, startAngle, endAngle, anticlockwise)：绘制弧线。
+        arcTo(x1, y1, x2, y2, radius)：绘制弧线，连接两个点并使用半径定义曲线。
+        quadraticCurveTo(cpX, cpY, x, y)：绘制二次贝塞尔曲线。
+        drawImage(image, x, y, width, height)：绘制图像。
+        fill()：填充当前路径。
+        stroke()：绘制当前路径的描边。
+        closePath()：闭合路径。
+        fillRect(x, y, width, height)：绘制填充矩形。
