@@ -1,5 +1,5 @@
 // 创建一个基类
-class Shape {
+class BaseShape {
     // 定义基类的属性
     constructor(x, y, fillColor, strokeColor, borderWidth) {
         this.x = x;  //起始点x
@@ -25,10 +25,10 @@ class Shape {
     }
 }
 
-/* The CanvasText class is a subclass of Shape that represents a text element on a canvas with
+/* The CanvasText class is a subclass of BaseShape that represents a text element on a canvas with
 properties such as font, text alignment, and fill/stroke colors. */
 // create CanvasText
-class CanvasText extends Shape {
+class CanvasText extends BaseShape {
     constructor(x, y, text, font, textAlign, fillColor, strokeColor, borderWidth) {
         super(x, y, fillColor, strokeColor, borderWidth);
         this.text = text;
@@ -54,7 +54,7 @@ class CanvasText extends Shape {
 }
 
 // creates a image 
-class CanvasImage extends Shape {
+class CanvasImage extends BaseShape {
     constructor(x, y, imageID) {
         super(x, y, 0, 0, 0);
 
@@ -70,7 +70,7 @@ class CanvasImage extends Shape {
 
 
 // creates a rectangle 
-class Rectangle extends Shape {
+class Rectangle extends BaseShape {
     constructor(x, y, width, height, fillColor, strokeColor, borderWidth) {
         super(x, y, fillColor, strokeColor, borderWidth);
         this.width = width;
@@ -87,7 +87,7 @@ class Rectangle extends Shape {
 
 
 // creates a circular
-class Arc extends Shape {
+class Arc extends BaseShape {
     constructor(x, y, radius, rotation, startAngle, endAngle, isCounterClockwise, fillColor, strokeColor, borderWidth) {
         super(x, y, fillColor, strokeColor, borderWidth);
         this.radius = radius;
@@ -104,24 +104,12 @@ class Arc extends Shape {
     }
 }
 
-
-
-
-
-function RandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function RectContains(shape, x, y) {
-    var horizontal_edge = (shape.x < x && shape.x + shape.width > x);
-    var vertical_edge = (shape.y < y && shape.y + shape.height > y);
-    return horizontal_edge && vertical_edge;
-}
 class Color {
     constructor(r, g, b) {
         this.r = Math.round(r);
         this.g = Math.round(g);
         this.b = Math.round(b);
+        this.a = 0.7;
     }
 
     add(anotherColor) {
@@ -136,9 +124,18 @@ class Color {
         this.b += anotherColor.b;
         if (this.b > 255) this.b = 255;
         else if (this.b < 0) this.b = 0;
+
+        // Set the alpha (transparency) to 0.3
+        this.a = 0.7;
     }
 
     toHex() {
-        return "#" + this.r.toString(16).padStart(2, "0") + this.g.toString(16).padStart(2, "0") + this.b.toString(16).padStart(2, "0")
+        const alphaHex = Math.round(this.a * 255).toString(16).padStart(2, "0");
+        return "#" + this.r.toString(16).padStart(2, "0") + this.g.toString(16).padStart(2, "0") + this.b.toString(16).padStart(2, "0") + alphaHex;
     }
-}
+};
+
+
+
+
+

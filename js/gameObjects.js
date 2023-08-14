@@ -42,17 +42,18 @@ class Player extends CanvasImage {
     }
 
     draw(ctx) {
-        var ctxXOffset = this.x + this.width / 2.2;
-        var ctxYOffset = this.y + this.height / 1.7;
+        const { x, y, width, height, leftEye, rightEye, net } = this
+        var ctxXOffset = x + width / 2.2;
+        var ctxYOffset = y + height / 1.7;
         ctx.translate(ctxXOffset, ctxYOffset);
         ctx.rotate(this.netRotation);
 
         if (!this.isFlipped) {
             ctx.scale(-1, 1);
-            this.net.draw(ctx);
+            net.draw(ctx);
             ctx.scale(-1, 1);
         } else {
-            this.net.draw(ctx);
+            net.draw(ctx);
         }
         ctx.rotate(-this.netRotation);
         ctx.translate(-ctxXOffset, -ctxYOffset);
@@ -67,11 +68,12 @@ class Player extends CanvasImage {
             super.draw(ctx);
         }
 
-        this.leftEye.draw(ctx);
-        this.rightEye.draw(ctx);
+        leftEye.draw(ctx);
+        rightEye.draw(ctx);
     }
 
     UpdateOtherFeatures() {
+        const { x, y, leftEye, rightEye, catchNet } = this
         if (this.timeSinceLastSwing <= 0.785) {
             this.netRotation = (this.baseNetRotation - 0.2) * Math.cos(8 * this.timeSinceLastSwing) + 0.2;
 
@@ -87,19 +89,19 @@ class Player extends CanvasImage {
 
         if (this.isFlipped) {
 
-            this.catchNet.x = this.x + this.catchNet.rightOffset;
-            this.leftEye.x = this.x + this.leftEye.leftOffset + this.netRotation * 2;
-            this.rightEye.x = this.x + this.rightEye.leftOffset + this.netRotation * 2;
+            catchNet.x = x + catchNet.rightOffset;
+            leftEye.x = x + leftEye.leftOffset + this.netRotation * 2;
+            rightEye.x = x + rightEye.leftOffset + this.netRotation * 2;
         } else {
 
-            this.catchNet.x = this.x + this.catchNet.leftOffset;
-            this.leftEye.x = this.x + this.leftEye.rightOffset + this.netRotation * 2;
-            this.rightEye.x = this.x + this.rightEye.rightOffset + this.netRotation * 2;
+            catchNet.x = x + catchNet.leftOffset;
+            leftEye.x = x + leftEye.rightOffset + this.netRotation * 2;
+            rightEye.x = x + rightEye.rightOffset + this.netRotation * 2;
         }
 
-        this.catchNet.y = this.y + this.catchNet.yOffset;
-        this.leftEye.y = this.y + this.leftEye.yOffset;
-        this.rightEye.y = this.y + this.rightEye.yOffset;
+        catchNet.y = y + catchNet.yOffset;
+        leftEye.y = y + leftEye.yOffset;
+        rightEye.y = y + rightEye.yOffset;
     }
 
 
@@ -149,6 +151,7 @@ class Bug extends Arc {
     }
 
     UpdatePosition() {
+
         this.timeAlive += this.deltaTime;
 
         if (this.timeAlive <= 1) this.radius += 4 * this.deltaTime;
@@ -159,7 +162,6 @@ class Bug extends Arc {
             this.fillColor = this.currentColor.toHex();
         } else if (this.timeAlive <= 9) {
             // idly moving around in the spot
-            this.flyAway();
         } else if (this.timeAlive <= 15) {
             this.flyAway();
             this.ghost_y -= this.y_speed;
@@ -171,10 +173,11 @@ class Bug extends Arc {
     }
 
     CheckCollision(playerObject) {
+        const { catchNet, x, y, width, height } = playerObject;
         if (playerObject.CanCatchBugs) {
-            if (TestPlayerBugCollision(playerObject.catchNet.x, playerObject.catchNet.y, playerObject.catchNet.width, playerObject.catchNet.height, this))
+            if (TestPlayerBugCollision(catchNet.x, catchNet.y, catchNet.width, catchNet.height, this))
                 return 1;
-        } else if (TestPlayerBugCollision(playerObject.x, playerObject.y, playerObject.width, playerObject.height, this))
+        } else if (TestPlayerBugCollision(x, y, width, height, this))
             return -1;
         return 0;
     }
@@ -248,15 +251,74 @@ class Slider extends Rectangle {
     }
 }
 
-// interface class
-class interfaceScreen {
-    constructor(ctx, width, height) {
-        this.ctx = ctx;
-        this.width = width;
-        this.height = height;
+
+class BugsHandler {
+    constructor(max_bugs_allowed, deltaTime) {
+        this.max_bugs_allowed = max_bugs_allowed;
+        this.deltaTime = deltaTime;
+        this.timeSinceLastSpawn = 1;
+
+        this.bugs = [];
     }
-    draw() { }
-    Update() { }
+
+
+    draw(ctx) {
+        this.bugs.forEach(bug => {
+            bug.draw(ctx);
+        });
+    }
+
+
+    GenerateBug() {
+        this.timeSinceLastSpawn += this.deltaTime;
+        const maxBugsAllowed = this.max_bugs_allowed;
+        const spawnCooldown = 0.75;
+
+        const shouldSpawnBug = this.bugs.length < maxBugsAllowed && this.timeSinceLastSpawn > spawnCooldown;
+
+        if (shouldSpawnBug) {
+            const xPosition = RandomNumber(20, 780);
+            const yPosition = 480;
+            const newBug = new Bug(xPosition, yPosition, this.deltaTime);
+
+            this.bugs.push(newBug);
+            this.timeSinceLastSpawn = 0;
+        }
+    }
+
+
+
+    // restarts the sequence of bugs
+    Restart() {
+        this.bugs = [];
+        this.timeSinceLastSpawn = 1;
+    }
+
+
+    UpdatePosition(playerObject) {
+        for (let i = 0; i < this.bugs.length; i++) {
+            let bug = this.bugs[i];
+            let bugCollision = bug.CheckCollision(playerObject);
+
+            if (bugCollision != 0) {
+                this.bugs.splice(i, 1);
+                i--;
+
+                if (bugCollision == 1) {
+                    gameObject.gameScreen.addScore();
+                } else if (bugCollision == -1) {
+                    gameObject.gameScreen.minusScore();
+                }
+            } else {
+                bug.UpdatePosition();
+
+                if (bug.StillInBounds()) {
+                    this.bugs.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }
 }
 
 class Sound {
@@ -291,3 +353,12 @@ function TestPlayerBugCollision(playerX, playerY, playerWidth, playerHeight, bug
     return horizontal_edge && vertical_edge;
 }
 
+function RandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function RectContains(shape, x, y) {
+    var horizontal_edge = (shape.x < x && shape.x + shape.width > x);
+    var vertical_edge = (shape.y < y && shape.y + shape.height > y);
+    return horizontal_edge && vertical_edge;
+}

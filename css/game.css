@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,7 +8,7 @@ body {
     background: #1c1e26;
 }
 
-.container{
+.container {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -19,11 +19,11 @@ body {
 canvas {
     /* width: 65vw;
     height: 80vh; */
-    background: url("../images/game_background_image.jpg") center center/cover no-repeat ;
-    border-radius: 50px;
+    background: url("../images/game_background_image.jpg") center center/cover no-repeat;
+    border-radius: 20px;
+
 }
 
 #canvas_images {
     display: none;
 }
-
